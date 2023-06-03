@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + TS</title>
+  <link href="./style.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/gh/interactiveJS/interactiveJS@v2.0.1/src/css/resizable.min.css"
+    rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/interactiveJS/interactiveJS@v2.0.1/src/individuals/resizable.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/gh/interactiveJS/interactiveJS@v2.0.1/src/css/interactive.min.css"
+    rel="stylesheet" />
+
+
+    <link href="./assets/custom_style.css" rel="stylesheet" />
+    <link href="./assets/right-click-simulate.css" rel="stylesheet" />
+
+    <!-- include the style -->
+<link rel="stylesheet" href="./assets/alertify/css/alertify.min.css" />
+<!-- include a theme -->
+<link rel="stylesheet" href="./assets/alertify/css/themes/default.min.css" />
+
+
+</head>
+
+<body>
+  <div id="app" class="panel_opened_left">
+    <!-- <div id="test"></div> -->
+    <div class="xboard xleft" style="overflow: auto;" id="imageSect">
+      <a href="javascript:void(0);" class="control_panel_open_close opened_panel">&#62;</a>
+      <!-- <h2><a href="http://ekram.pro/ericdev2023/form/index.php/admin" target="_blank">Create Form</a></h2> -->
+
+      <button id="addContainer">Add Container</button>
+      <button id="addForm">Add Form</button>
+      <button id="extractHTMLBtn">Extract HTML and Open</button>
+
+
+      <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
+        <div id="drag_upload_file">
+            <!-- <p>Drop file here</p>
+            <p>or</p> -->
+            <p><input type="button" value="Select / Drag & Drop Image" onclick="file_explorer();" style=" white-space: normal;" /></p>
+            <input type="file" id="selectfile" />
+        </div>
+    </div>
+
+
+
+      <!-- <img id="imgFolded1" data-id="4" class="ximg parentItem" src="https://picsum.photos/200/201" alt="imgFolded1" draggable="true" resizable />
+      <img id="imgFolded2" data-id="5" data-parent="imgFolded1" class="ximg childItem" src="https://picsum.photos/200/202" alt="imgFolded2" draggable="true" resizable />
+      <img id="imgFolded3" data-id="6" data-parent="imgFolded1" class="ximg childItem" src="https://picsum.photos/200/203" alt="imgFolded3" draggable="true" resizable /> -->
+
+
+      <img id="imgFolded1" data-id="4" class="ximg parentItem replacingClass" src="./uploads/1683382881_141-200x202.jpg" alt="imgFolded1" draggable="true" resizable />
+      <img id="imgFolded2" data-id="5" data-parent="imgFolded1" class="ximg childItem replacingClass" src="./uploads/1683382991_141-200x202.jpg" alt="imgFolded2" draggable="true" resizable />
+      <img id="imgFolded3" data-id="6" data-parent="imgFolded1" class="ximg childItem replacingClass" src="./uploads/1683383099_651-200x201.jpg" alt="imgFolded3" draggable="true" resizable />
+      <img id="imgFolded4" data-id="7" data-parent="imgFolded1" class="ximg childItem replacingClass" src="./uploads/1683925255_s1235.jpg" alt="imgFolded3" draggable="true" resizable />
+
+
+
+
+<!-- <img id="img1" data-id="1" class="ximg" src="https://picsum.photos/200/201" alt="img1" draggable="true" resizable />
+<img id="img2" data-id="2" class="ximg" src="https://picsum.photos/200/202" alt="img2" draggable="true" resizable />
+<img id="img3" data-id="3" class="ximg" src="https://picsum.photos/200/203" alt="img3" draggable="true" resizable /> -->
+
+
+    </div>
+    <div class="xboard xright">
+      <div id="containerNest"></div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <script>
+    function extractHTMLAndOpen() {
+      let divContent = document.getElementById("containerNest").outerHTML;
+
+      let tempElement = document.createElement("div");
+
+      tempElement.innerHTML = divContent;
+
+      let handleDivs = tempElement.getElementsByClassName("container handle");
+      while (handleDivs.length > 0) {
+        handleDivs[0].parentNode.removeChild(handleDivs[0]);
+      }
+
+      let closeDivs = tempElement.getElementsByClassName("container close");
+      while (closeDivs.length > 0) {
+        closeDivs[0].parentNode.removeChild(closeDivs[0]);
+      }
+
+      let resizableElements = tempElement.querySelectorAll(".resizable");
+      for (let i = 0; i < resizableElements.length; i++) {
+        resizableElements[i].classList.remove("resizable");
+      }
+
+      let imgTags = tempElement.getElementsByTagName("img");
+      for (let i = 0; i < imgTags.length; i++) {
+        imgTags[i].removeAttribute("resizable");
+      }
+
+      let newWindow = window.open();
+
+      newWindow.document.write(tempElement.innerHTML);
+
+      newWindow.document.documentElement.style.height = "100vh";
+      newWindow.document.documentElement.style.width = "100vw";
+      newWindow.document.documentElement.style.backgroundColor = "grey"; // Add grey background
+
+      let headElement = newWindow.document.head;
+      let styleTags = document.getElementsByTagName("style");
+      for (let i = 0; i < styleTags.length; i++) {
+        let clonedStyleTag = styleTags[i].cloneNode(true);
+        newWindow.document.head.appendChild(clonedStyleTag);
+      }
+      let linkTags = document.getElementsByTagName("link");
+      for (let i = 0; i < linkTags.length; i++) {
+        let clonedLinkTag = linkTags[i].cloneNode(true);
+        newWindow.document.head.appendChild(clonedLinkTag);
+      }
+
+      let downloadButton = newWindow.document.createElement("button");
+      downloadButton.textContent = "Download HTML";
+      downloadButton.style.position = "fixed";
+      downloadButton.style.bottom = "0";
+      downloadButton.style.zIndex = "50";
+      downloadButton.addEventListener("click", function () {
+        const htmlElement = newWindow.document.documentElement;
+
+        const clonedHtmlElement = htmlElement.cloneNode(true);
+
+        const styleElements = newWindow.document.querySelectorAll("style");
+
+        styleElements.forEach((styleElement) => {
+          clonedHtmlElement.appendChild(styleElement.cloneNode(true));
+        });
+
+        const blob = new Blob([clonedHtmlElement.outerHTML], { type: "text/html" });
+
+        let url = URL.createObjectURL(blob);
+
+        let downloadLink = newWindow.document.createElement("a");
+        downloadLink.href = url;
+        downloadLink.download = "page.html";
+        downloadLink.click();
+
+        let cssLink = document.createElement("a");
+        cssLink.href = "style.css";
+        cssLink.download = "style.css";
+        cssLink.style.display = "none";
+        newWindow.document.body.appendChild(cssLink);
+        cssLink.click();
+        newWindow.document.body.removeChild(cssLink);
+
+        URL.revokeObjectURL(url);
+      });
+
+      newWindow.document.body.appendChild(downloadButton);
+    }
+
+    document.getElementById("extractHTMLBtn").addEventListener("click", extractHTMLAndOpen);
+  </script>
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/interactiveJS/interactiveJS@v2.0.1/src/interactive.min.js"></script>
+  <script type="text/javascript" src="./assets/index-e65d68f3.js"></script>
+
+
+  <!-- <script type="text/javascript" src="./index.js"></script> -->
+
+  <script type="text/javascript" src="./assets/custom_script.js"></script>
+
+  <!-- include the script -->
+<script src="./assets/alertify/alertify.min.js"></script>
+
+  <script type="text/javascript" src="./assets/right-click-simulate.js"></script>
+
+</body>
+
+</html>

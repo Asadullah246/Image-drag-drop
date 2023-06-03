@@ -1,0 +1,116 @@
+#drop_file_zone {
+    background-color: #EEE;
+    border: #999 5px dashed;
+    /* width: 290px;
+    height: 200px; */
+    width: 80%;
+    height: auto;
+    padding: 8px;
+    font-size: 18px;
+}
+#drag_upload_file {
+  /* width:50%; */
+  width:100%;
+  margin:0 auto;
+}
+#drag_upload_file p {
+  text-align: center;
+}
+#drag_upload_file #selectfile {
+  display: none;
+}
+
+.img_container{
+    width: 80%;
+    margin: 10px;
+}
+
+.img_hide{
+    visibility: hidden;   
+}
+
+.ximg{
+  margin: 0;
+}
+.contaienr_image::after {
+  content: " <- BORING";
+  color: red;
+}
+
+/* .ximg:after{
+  content:url('./close.png'); /* with class ModalCarrot ??* /
+  position:relative; /*or absolute* /
+  z-index:100000; /*a number that's more than the modal box* /
+  left:-50px;
+  top:10px;
+} */
+
+
+
+
+
+
+
+
+.control_panel_open_close{
+  position: absolute;
+
+    z-index: 999999999999999999999999999999;
+    top: 50%;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    font-weight: bolder;
+    color: white;
+    background: gray;
+}
+.control_panel_open_close.opened_panel{
+  /* left: 274px; */
+  left: 20%;
+}
+.control_panel_open_close.closed_panel{
+  left: 0px;
+}
+.control_panel_open_close:hover{
+  color: rgb(94, 91, 91);
+    background: rgb(223, 220, 220);
+}
+
+.panel_closed_left{
+  grid-template-columns: 0fr 5fr !important;
+}
+
+.active_touched_item{
+  z-index: 111;
+}
+
+
+
+
+
+
+
+
+
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255, 255, 255, 0.3);
+}
